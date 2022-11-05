@@ -1,0 +1,32 @@
+{
+  "name": "consul-js-common",
+  "version": "0.0.1",
+  "main": "./build/index.js",
+  "typings": "./build/index.d.ts",
+  "description": "Consul common package made for consul-js and its subpackages, provides no value as standalone",
+  "author": "OrahKokos",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^29.0.3",
+    "@types/node": "^18.7.18",
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
+    "eslint": "^8.23.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.0.3",
+    "prettier": "^2.7.1",
+    "ts-jest": "^29.0.1",
+    "ts-node": "^10.9.1",
+    "ts-toolbelt": "^9.6.0",
+    "typescript": "^4.8.3"
+  },
+  "scripts": {
+    "build": "rm -rf build/ && tsc -p tsconfig.prod.json",
+    "lint": "./node_modules/eslint/bin/eslint.js . --ext .ts --fix",
+    "test": "jest --config ./jest.config.js --coverage --runInBand",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
+    "prepublishOnly": "yarn build:prod"
+  }
+}
