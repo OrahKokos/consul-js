@@ -4,30 +4,29 @@ services:
   consul-server:
     image: hashicorp/consul:latest
     container_name: consul-server
-    restart: always
+    restart: "no"
     volumes:
-     - ./resources:/consul/config
-     - ./data:/consul/data
+      - ../volumes/consul/config:/consul/config
+      - ../volumes/consul/data:/consul/data
     ports:
       - "8500:8500"
       - "8600:8600/tcp"
       - "8600:8600/udp"
     command: "agent"
   app:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
 
     volumes:
       # Forwards the local Docker socket to the container.
-      - /var/run/docker.sock:/var/run/docker-host.sock 
+      - /var/run/docker.sock:/var/run/docker-host.sock
       # Update this to wherever you want VS Code to mount the folder of your project
       - ..:/workspaces:cached
 
     # Overrides default command so things don't shut down after the process ends.
     entrypoint: /usr/local/share/docker-init.sh
-    command: sleep infinity 
-
+    command: sleep infinity
     # Uncomment the next four lines if you will use a ptrace-based debuggers like C++, Go, and Rust.
     # cap_add:
     #  - SYS_PTRACE

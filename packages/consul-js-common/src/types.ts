@@ -20,7 +20,10 @@ export type ConsulOptions = {
   watcherOptions?: ConsulWatchOptions
 }
 
-export type RequestHandler<Payload = any, Return = any> = (data: ConsulRequestOptions, payload?: Payload) => Return
+export type RequestHandler<Payload = any, Return = any> = (
+  data: ConsulRequestOptions,
+  payload?: Payload,
+) => Return
 
 // Headers
 export type ConsulXHeader = {
@@ -30,7 +33,10 @@ export type ConsulBearerHeader = {
   Authorization: `Bearer ${string}`
 }
 
-export type ConsulHeaders = ConsulXHeader | ConsulBearerHeader | Record<string, never>
+export type ConsulHeaders =
+  | ConsulXHeader
+  | ConsulBearerHeader
+  | Record<string, never>
 
 // Partial result
 export type ConsulRequestOptionsInitPartial = {

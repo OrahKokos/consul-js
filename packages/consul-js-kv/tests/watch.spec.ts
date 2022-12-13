@@ -4,18 +4,19 @@ import {
   init,
   WatchStateUnlocked,
   WatchStateLocked,
-  resolveWatchOptions,
   unlockReady,
   WatchState,
   filterLocked,
   run,
   start,
   stop,
-  executePolling
+  executePolling,
 } from '../src/watch'
 
+import { resolveWatchOptions } from '../src/index'
+
 const wait = (time: number) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     return setTimeout(resolve, time)
   })
 }
@@ -24,7 +25,7 @@ const createWatchService = (handler: (data: TxnData) => any) => {
   const events = new EventEmitter()
   return init(events)({
     watchOptions: resolveWatchOptions(),
-    handler
+    handler,
   })
 }
 
@@ -80,7 +81,12 @@ describe('Consul KV watch tests', () => {
     const watchService = createWatchService(defaultHandler)
     watchService.registerKeys(['someKey1', 'someKey2', 'someKey2'])
     expect(watchService.getState().size).toBe(2)
-    watchService.deregisterKeys(['someKey1', 'someKey2', 'someKey2', 'someUnknown'])
+    watchService.deregisterKeys([
+      'someKey1',
+      'someKey2',
+      'someKey2',
+      'someUnknown',
+    ])
     expect(watchService.getState().size).toBe(0)
   })
   it('unlockReady', () => {
@@ -91,13 +97,13 @@ describe('Consul KV watch tests', () => {
       attempt: 3,
       locked: true,
       ModifyIndex: -1,
-      unlockTime: new Date(now.getTime() + 1 * 24 * 60 * 60 * 1000)
+      unlockTime: new Date(now.getTime() + 1 * 24 * 60 * 60 * 1000),
     }
 
     const unlockValue: WatchStateUnlocked = {
       attempt: 0,
       locked: false,
-      ModifyIndex: -1
+      ModifyIndex: -1,
     }
 
     const state = new Map<string, WatchState>()
@@ -106,20 +112,22 @@ describe('Consul KV watch tests', () => {
 
     const data1: Array<[string, WatchState]> = [
       ['someKey1', lockedValue1],
-      ['someKey2', unlockValue]
+      ['someKey2', unlockValue],
     ]
 
-    expect(Array.from(data1).map(unlockReadyWithDate)).toEqual(Array.from(data1))
+    expect(Array.from(data1).map(unlockReadyWithDate)).toEqual(
+      Array.from(data1),
+    )
 
     const lockedValue2: WatchStateLocked = {
       attempt: 3,
       locked: true,
       ModifyIndex: -1,
-      unlockTime: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000)
+      unlockTime: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000),
     }
     const data2: Array<[string, WatchState]> = [
       ['someKey1', lockedValue2],
-      ['someKey2', unlockValue]
+      ['someKey2', unlockValue],
     ]
     const res = Array.from(data2).map(unlockReadyWithDate)
     const toMap = new Map(res)
@@ -131,13 +139,13 @@ describe('Consul KV watch tests', () => {
       attempt: 3,
       locked: true,
       ModifyIndex: -1,
-      unlockTime: new Date(now.getTime() + 1 * 24 * 60 * 60 * 1000)
+      unlockTime: new Date(now.getTime() + 1 * 24 * 60 * 60 * 1000),
     }
 
     const unlockValue: WatchStateUnlocked = {
       attempt: 0,
       locked: false,
-      ModifyIndex: -1
+      ModifyIndex: -1,
     }
 
     const state = new Map<string, WatchState>()
@@ -172,7 +180,7 @@ describe('Consul KV watch tests', () => {
     const watchService = createWatchService(defaultHandler)
     watchService.registerKeys(['someKey1', 'someKey2', 'someKey2'])
     const state = watchService.getState()
-    const execute = executePolling(new EventEmitter())((data) => {
+    const execute = executePolling(new EventEmitter())(data => {
       return Promise.resolve(data.map((_d, index) => `index-${index}`))
     })(state)
     const result = await execute()

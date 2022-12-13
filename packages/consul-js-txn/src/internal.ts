@@ -1,7 +1,8 @@
 import { MAX_PAYLOAD } from './/constants'
 import { TxnData } from './types'
 
-export const getTargetIndex = (size: number) => (index: number) => Math.floor(index / size)
+export const getTargetIndex = (size: number) => (index: number) =>
+  Math.floor(index / size)
 
 export const toPartitions =
   (size: number) =>

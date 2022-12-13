@@ -1,10 +1,19 @@
-import { ConsulTopResolver, resolveRequestOptions, getPath, CONSUL_VERSION_PATH } from 'consul-js-common'
+import {
+  ConsulTopResolver,
+  resolveRequestOptions,
+  getPath,
+  CONSUL_VERSION_PATH,
+} from 'consul-js-common'
 import { EventEmitter } from 'stream'
 import { initWithResolver, init, createTxnKVGetPayload } from '../src/index'
-import { getTargetIndex, toPartitions, partitionTxnPayload } from '../src/internal'
+import {
+  getTargetIndex,
+  toPartitions,
+  partitionTxnPayload,
+} from '../src/internal'
 
-const wait = (milsec) => {
-  return new Promise((resolve) => {
+const wait = (milsec: number) => {
+  return new Promise(resolve => {
     return setTimeout(resolve, milsec)
   })
 }
@@ -15,8 +24,8 @@ describe('Consul JS TXN tests', () => {
       expect(createTxnKVGetPayload('someString')).toStrictEqual({
         KV: {
           Verb: 'get',
-          Key: 'someString'
-        }
+          Key: 'someString',
+        },
       })
     })
     it('getTargetIndex', () => {
@@ -36,10 +45,18 @@ describe('Consul JS TXN tests', () => {
     it('partitionTxnPayload', () => {
       expect(partitionTxnPayload([]).length).toBe(0)
       expect(
-        partitionTxnPayload([...Array(64).keys()].map((index) => createTxnKVGetPayload(`index-${index}`))).length
+        partitionTxnPayload(
+          [...Array(64).keys()].map(index =>
+            createTxnKVGetPayload(`index-${index}`),
+          ),
+        ).length,
       ).toBe(1)
       expect(
-        partitionTxnPayload([...Array(128).keys()].map((index) => createTxnKVGetPayload(`index-${index}`))).length
+        partitionTxnPayload(
+          [...Array(128).keys()].map(index =>
+            createTxnKVGetPayload(`index-${index}`),
+          ),
+        ).length,
       ).toBe(2)
     })
   })
@@ -49,11 +66,11 @@ describe('Consul JS TXN tests', () => {
         requestOptionsResolver: resolveRequestOptions({
           host: 'localhost',
           port: 8500,
-          headers: {}
+          headers: {},
         }),
         pathResolver: getPath(CONSUL_VERSION_PATH),
         requestHandler: (_data, _payload) => true,
-        events: new EventEmitter()
+        events: new EventEmitter(),
       }
       const txnService = initWithResolver(topLevelResolver)
       expect(txnService).toHaveProperty('createTransaction')
@@ -61,7 +78,7 @@ describe('Consul JS TXN tests', () => {
     it('init', () => {
       const txnService = init({
         host: 'localhost',
-        port: 8500
+        port: 8500,
       })((_data, _payload) => true)
       expect(txnService).toHaveProperty('createTransaction')
     })
@@ -71,7 +88,7 @@ describe('Consul JS TXN tests', () => {
         requestOptionsResolver: resolveRequestOptions({
           host: 'localhost',
           port: 8500,
-          headers: {}
+          headers: {},
         }),
         pathResolver: getPath(CONSUL_VERSION_PATH),
         requestHandler: async (data, payload) => {
@@ -81,9 +98,10 @@ describe('Consul JS TXN tests', () => {
           expect(payload.length).toBeLessThanOrEqual(64)
           spy()
           await wait(200)
-          return Promise.resolve(payload.map((_x, index) => index))
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          return Promise.resolve(payload.map((_x: any, index: any) => index))
         },
-        events: new EventEmitter()
+        events: new EventEmitter(),
       }
       const txnService = initWithResolver(topLevelResolver)
 
@@ -92,7 +110,9 @@ describe('Consul JS TXN tests', () => {
       expect(spy).not.toHaveBeenCalled()
 
       const result64 = await txnService.createTransaction(
-        [...Array(64).keys()].map((index) => createTxnKVGetPayload(`index-${index}`))
+        [...Array(64).keys()].map(index =>
+          createTxnKVGetPayload(`index-${index}`),
+        ),
       )
       expect(result64.length).toBe(64)
       expect(spy).toHaveBeenCalledTimes(1)
@@ -100,7 +120,9 @@ describe('Consul JS TXN tests', () => {
       spy.mockClear()
 
       const result128 = await txnService.createTransaction(
-        [...Array(128).keys()].map((index) => createTxnKVGetPayload(`index-${index}`))
+        [...Array(128).keys()].map(index =>
+          createTxnKVGetPayload(`index-${index}`),
+        ),
       )
       expect(result128.length).toBe(128)
       expect(spy).toHaveBeenCalledTimes(2)

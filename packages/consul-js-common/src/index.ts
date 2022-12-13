@@ -11,7 +11,7 @@ import {
   RequestHandler,
   ConsulTopResolver,
   ConsulModuleResolver,
-  ConsulWatchOptions
+  ConsulWatchOptions,
 } from './types'
 
 const getPath =
@@ -22,16 +22,18 @@ const getPath =
     return normalize(`/${version}/${service}`)
   }
 
-const getAuthHeader = (tokenOptions?: ConsulOptions['token']): ConsulHeaders => {
+const getAuthHeader = (
+  tokenOptions?: ConsulOptions['token'],
+): ConsulHeaders => {
   if (!tokenOptions) return {}
   if (tokenOptions.type === 'x-consul-token') {
     return {
-      'X-Consul-Token': tokenOptions.value
+      'X-Consul-Token': tokenOptions.value,
     }
   }
   if (tokenOptions.type === 'bearer') {
     return {
-      Authorization: `Bearer ${tokenOptions.value}`
+      Authorization: `Bearer ${tokenOptions.value}`,
     }
   }
   return {}
@@ -54,7 +56,7 @@ const resolveRequestOptions =
   <T extends Record<PropertyKey, unknown>>(query: T): ConsulRequestOptions => ({
     ...reqOpts,
     path: resolveWithQueryParams(query)(path),
-    method
+    method,
   })
 
 const wrapErrorHandler =
@@ -78,11 +80,11 @@ const defaultInit =
       requestOptionsResolver: resolveRequestOptions({
         host: options.host || 'localhost',
         port: options.port || 8500,
-        headers: getAuthHeader(options.token)
+        headers: getAuthHeader(options.token),
       }),
       pathResolver: getPath(CONSUL_VERSION_PATH),
       requestHandler: wrapErrorHandler(events)(requestHandler),
-      events
+      events,
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -103,5 +105,5 @@ export {
   ConsulRequestOptionsInitPartial,
   ConsulRequestOptions,
   ConsulTopResolver,
-  ConsulModuleResolver
+  ConsulModuleResolver,
 }

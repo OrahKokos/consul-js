@@ -107,7 +107,12 @@ export type TxnNodeDeleteCas = {
   Verb: 'delete-cas'
 }
 
-export type TxnNodePayload = TxnNodeSet | TxnNodeCas | TxnNodeGet | TxnNodeDelete | TxnNodeDeleteCas
+export type TxnNodePayload =
+  | TxnNodeSet
+  | TxnNodeCas
+  | TxnNodeGet
+  | TxnNodeDelete
+  | TxnNodeDeleteCas
 
 // Service - Not Implemented
 export type TxnServiceSet = {
@@ -127,7 +132,12 @@ export type TxnServiceDeleteCas = {
 }
 
 export type TxnServicePayload = {
-  Service: TxnServiceSet | TxnServiceCas | TxnServiceGet | TxnServiceDelete | TxnServiceDeleteCas
+  Service:
+    | TxnServiceSet
+    | TxnServiceCas
+    | TxnServiceGet
+    | TxnServiceDelete
+    | TxnServiceDeleteCas
 }
 
 // Check - Not Implemented
@@ -147,9 +157,18 @@ export type TxnCheckDeleteCas = {
   Verb: 'delete-cas'
 }
 
-export type TxnCheckPayload = { Check: TxnCheckSet | TxnCheckCas | TxnCheckGet | TxnCheckDelete | TxnCheckDeleteCas }
+export type TxnCheckPayload = {
+  Check:
+    | TxnCheckSet
+    | TxnCheckCas
+    | TxnCheckGet
+    | TxnCheckDelete
+    | TxnCheckDeleteCas
+}
 
-export type TxnData = Array<TxnKVPayload | TxnNodePayload | TxnServicePayload | TxnCheckPayload>
+export type TxnData = Array<
+  TxnKVPayload | TxnNodePayload | TxnServicePayload | TxnCheckPayload
+>
 
 export type TxnQueryObject =
   | {

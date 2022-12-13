@@ -2,6 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "rootDir": ".",
+    "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -10,11 +11,30 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "consul-js": [
+        "packages/consul-js/src/index.ts"
+      ],
+      "consul-js-common": [
+        "packages/consul-js-common/src/index.ts"
+      ],
+      "consul-js-kv": [
+        "packages/consul-js-kv/src/index.ts"
+      ],
+      "consul-js-txn": [
+        "packages/consul-js-txn/src/index.ts"
+      ]
+    }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

@@ -1,37 +1,68 @@
 {
-  "env": {
-      "es2021": true,
-      "node": true
-  },
-  "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "prettier"
+  "root": true,
+  "ignorePatterns": [
+    "**/*"
   ],
-  "overrides": [],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-      "ecmaVersion": "latest",
-      "sourceType": "module"
-  },
   "plugins": [
-      "@typescript-eslint",
-      "prettier"
+    "@nrwl/nx"
   ],
-  "rules": {
-      "no-console": 1,
-      "prettier/prettier": 2,
-      "linebreak-style": [
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.tsx",
+        "*.js",
+        "*.jsx"
+      ],
+      "rules": {
+        "@nrwl/nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "*",
+                "onlyDependOnLibsWithTags": [
+                  "*"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "*.ts",
+        "*.spec.ts"
+      ],
+      "env": {
+        "es2021": true,
+        "jest": true,
+        "node": true
+      },
+      "extends": [
+        "plugin:@nrwl/nx/typescript"
+      ],
+      "plugins": [
+        "prettier"
+      ],
+      "rules": {
+        "prettier/prettier": "error",
+        "linebreak-style": [
           "error",
           "unix"
-      ],
-      "quotes": [
+        ],
+        "quotes": [
           "error",
           "single"
-      ],
-      "semi": [
+        ],
+        "semi": [
           "error",
           "never"
-      ]
-  }
+        ]
+      }
+    }
+  ]
 }

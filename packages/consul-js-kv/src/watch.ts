@@ -2,7 +2,10 @@ import { ConsulWatchOptions } from 'consul-js-common'
 import { createTxnKVGetPayload, createTransaction } from 'consul-js-txn'
 import { EventEmitter } from 'stream'
 
-export type WatchInitOptions = { watchOptions: ConsulWatchOptions; handler: ReturnType<typeof createTransaction> }
+export type WatchInitOptions = {
+  watchOptions: ConsulWatchOptions
+  handler: ReturnType<typeof createTransaction>
+}
 
 export type WatchStateLocked = {
   attempt: number
@@ -22,10 +25,11 @@ export type WatchState = WatchStateLocked | WatchStateUnlocked
 export const initWatchState: WatchStateUnlocked = {
   attempt: 0,
   locked: false,
-  ModifyIndex: -1
+  ModifyIndex: -1,
 }
 
-export const isLockedState = (state: WatchState): state is WatchStateLocked => state.locked
+export const isLockedState = (state: WatchState): state is WatchStateLocked =>
+  state.locked
 
 export const getStateWatch = (state: Map<string, WatchState>) => () => state
 
@@ -60,7 +64,8 @@ export const unlockReady =
     return [key, state]
   }
 
-export const filterLocked = (entity: [string, WatchState]): boolean => !entity[1].locked
+export const filterLocked = (entity: [string, WatchState]): boolean =>
+  !entity[1].locked
 
 export const executePolling =
   (_events: EventEmitter) =>
@@ -96,26 +101,32 @@ export const stop = () => {
     clearInterval(timer)
     return (timer = undefined)
   }
+  return
 }
 
-export const init = (events: EventEmitter) => (watchStruct: WatchInitOptions) => {
-  const watchKeySet = new Map<string, WatchState>()
-  const executePollingWithResolver = executePolling(events)(watchStruct.handler)
-  const preparedInterval = run(watchStruct.watchOptions.iterationTime)(executePollingWithResolver(watchKeySet))
+export const init =
+  (events: EventEmitter) => (watchStruct: WatchInitOptions) => {
+    const watchKeySet = new Map<string, WatchState>()
+    const executePollingWithResolver = executePolling(events)(
+      watchStruct.handler,
+    )
+    const preparedInterval = run(watchStruct.watchOptions.iterationTime)(
+      executePollingWithResolver(watchKeySet),
+    )
 
-  const registerKey = registerKeyWatch(watchKeySet)
-  const registerKeys = registerKeysWatch(registerKey)
-  const deregisterKey = deregisterKeyWatch(watchKeySet)
-  const deregisterKeys = deregisterKeysWatch(deregisterKey)
-  const getState = getStateWatch(watchKeySet)
+    const registerKey = registerKeyWatch(watchKeySet)
+    const registerKeys = registerKeysWatch(registerKey)
+    const deregisterKey = deregisterKeyWatch(watchKeySet)
+    const deregisterKeys = deregisterKeysWatch(deregisterKey)
+    const getState = getStateWatch(watchKeySet)
 
-  return {
-    getState,
-    registerKey,
-    registerKeys,
-    deregisterKey,
-    deregisterKeys,
-    start: start(preparedInterval),
-    stop
+    return {
+      getState,
+      registerKey,
+      registerKeys,
+      deregisterKey,
+      deregisterKeys,
+      start: start(preparedInterval),
+      stop,
+    }
   }
-}
