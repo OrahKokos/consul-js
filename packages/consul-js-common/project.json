@@ -40,7 +40,7 @@
       "executor": "nx:run-commands",
       "outputs": [],
       "options": {
-        "command": "npx semantic-release-plus --extends packages/consul-js-common/release.config.js",
+        "command": "npx semantic-release-plus --extends ./packages/consul-js-common/release.config.js",
         "parallel": false
       }
     }
