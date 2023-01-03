@@ -1,7 +1,7 @@
 import EventEmitter from 'events'
 import {
   getPath,
-  CONSUL_VERSION_PATH,
+  CONSUL_VERSION_PATH_V1,
   getAuthHeader,
   resolveWithQueryParams,
   resolveRequestOptions,
@@ -27,21 +27,23 @@ const removeSlash = (s: string) => s.slice(1, s.length)
 describe('Consul common package', () => {
   describe('getPath', () => {
     it('Should return version and service only if last arg is empty', () => {
-      const expectedResult = `${CONSUL_VERSION_PATH}${SOME_SERVICE}`
-      expect(getPath(CONSUL_VERSION_PATH)(SOME_SERVICE)()).toEqual(
+      const expectedResult = `${CONSUL_VERSION_PATH_V1}${SOME_SERVICE}`
+      expect(getPath(CONSUL_VERSION_PATH_V1)(SOME_SERVICE)()).toEqual(
         expectedResult,
       )
       expect(
-        getPath(removeSlash(CONSUL_VERSION_PATH))(removeSlash(SOME_SERVICE))(),
+        getPath(removeSlash(CONSUL_VERSION_PATH_V1))(
+          removeSlash(SOME_SERVICE),
+        )(),
       ).toEqual(expectedResult)
     })
     it('Should return full path only if last arg is not empty', () => {
-      const expectedResult = `${CONSUL_VERSION_PATH}${SOME_SERVICE}${SOME_PATH}`
-      expect(getPath(CONSUL_VERSION_PATH)(SOME_SERVICE)(SOME_PATH)).toEqual(
+      const expectedResult = `${CONSUL_VERSION_PATH_V1}${SOME_SERVICE}${SOME_PATH}`
+      expect(getPath(CONSUL_VERSION_PATH_V1)(SOME_SERVICE)(SOME_PATH)).toEqual(
         expectedResult,
       )
       expect(
-        getPath(removeSlash(CONSUL_VERSION_PATH))(removeSlash(SOME_SERVICE))(
+        getPath(removeSlash(CONSUL_VERSION_PATH_V1))(removeSlash(SOME_SERVICE))(
           removeSlash(SOME_PATH),
         ),
       ).toEqual(expectedResult)

@@ -1,5 +1,5 @@
 {
-  "name": "consul-js-txn",
+  "name": "@orahkokos/consul-js-txn",
   "version": "0.0.0-semantic-release",
   "type": "commonjs",
   "repository": {

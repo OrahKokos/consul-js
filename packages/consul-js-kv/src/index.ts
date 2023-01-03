@@ -4,7 +4,7 @@ import {
   ConsulModuleResolver,
   ConsulOptions,
   RequestHandler,
-  CONSUL_VERSION_PATH,
+  CONSUL_VERSION_PATH_V1,
   getAuthHeader,
   getPath,
   resolveRequestOptions,
@@ -110,7 +110,7 @@ export const init =
         port: options.port || 8500,
         headers: getAuthHeader(options.token),
       }),
-      pathResolver: getPath(CONSUL_VERSION_PATH),
+      pathResolver: getPath(CONSUL_VERSION_PATH_V1),
       requestHandler: wrapErrorHandler(events)(requestHandler),
       events,
     }

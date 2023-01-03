@@ -2,7 +2,7 @@ import { stringify, ParsedUrlQueryInput } from 'querystring'
 import { normalize } from 'path'
 import EventEmitter from 'events'
 
-import { CONSUL_VERSION_PATH } from './constants'
+import { CONSUL_VERSION_PATH_V1 } from './constants'
 import {
   ConsulOptions,
   ConsulHeaders,
@@ -84,7 +84,7 @@ const defaultInit =
         port: options.port || 8500,
         headers: getAuthHeader(options.token),
       }),
-      pathResolver: getPath(CONSUL_VERSION_PATH),
+      pathResolver: getPath(CONSUL_VERSION_PATH_V1),
       requestHandler: wrapErrorHandler(events)(requestHandler),
       events,
     }
@@ -100,7 +100,7 @@ export {
   resolveWithQueryParams,
   resolveRequestOptions,
   wrapErrorHandler,
-  CONSUL_VERSION_PATH,
+  CONSUL_VERSION_PATH_V1,
   ConsulOptions,
   ConsulWatchOptions,
   RequestHandler,

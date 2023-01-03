@@ -2,7 +2,7 @@ import {
   ConsulTopResolver,
   resolveRequestOptions,
   getPath,
-  CONSUL_VERSION_PATH,
+  CONSUL_VERSION_PATH_V1,
 } from 'consul-js-common'
 import { EventEmitter } from 'stream'
 import { initWithResolver, init, createTxnKVGetPayload } from '../src/index'
@@ -68,7 +68,7 @@ describe('Consul JS TXN tests', () => {
           port: 8500,
           headers: {},
         }),
-        pathResolver: getPath(CONSUL_VERSION_PATH),
+        pathResolver: getPath(CONSUL_VERSION_PATH_V1),
         requestHandler: (_data, _payload) => true,
         events: new EventEmitter(),
       }
@@ -90,7 +90,7 @@ describe('Consul JS TXN tests', () => {
           port: 8500,
           headers: {},
         }),
-        pathResolver: getPath(CONSUL_VERSION_PATH),
+        pathResolver: getPath(CONSUL_VERSION_PATH_V1),
         requestHandler: async (data, payload) => {
           expect(data.host).toBe('localhost')
           expect(data.port).toBe(8500)
