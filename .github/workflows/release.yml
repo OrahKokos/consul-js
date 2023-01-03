@@ -8,11 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Read .nvmrc
-        run: NVMRC=$(cat .nvmrc)
+      - run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
+        id: nvm
       - uses: actions/setup-node@v3
         with:
-          node-version: ${NVMRC}
+          node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
       - run: yarn install --frozen-lockfile
       - run: npx nx affected --target=lint --parallel=3
       - run: npx nx affected --target=test --parallel=3 --ci --code-coverage
