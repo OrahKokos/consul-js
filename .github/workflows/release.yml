@@ -21,4 +21,4 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.PACKAGE_REGISTRY_TOKEN }}
         run: |
-          npx nx affected --target release --all
+          npx nx affected --target release
