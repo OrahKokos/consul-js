@@ -15,7 +15,7 @@
       }
     },
     "publish": {
-      "executor": "nx:run-commands",
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
         "command": "node tools/scripts/publish.mjs consul-js {args.ver} {args.tag}"
       },
@@ -34,6 +34,14 @@
       "options": {
         "jestConfig": "packages/consul-js/jest.config.ts",
         "passWithNoTests": true
+      }
+    },
+    "release": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "npx semantic-release-plus --extends packages/consul-js/release.config.js",
+        "parallel": false
       }
     }
   },

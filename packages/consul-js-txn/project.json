@@ -35,6 +35,14 @@
         "jestConfig": "packages/consul-js-txn/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "release": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "npx semantic-release-plus --extends packages/consul-js-txn/release.config.js",
+        "parallel": false
+      }
     }
   },
   "tags": []
