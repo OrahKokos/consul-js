@@ -61,8 +61,10 @@ const resolveRequestOptions =
 
 const wrapErrorHandler =
   (emitter: EventEmitter) =>
-  <T extends (options: ConsulRequestOptions, value?: any) => any>(handler: T) =>
-  async (options: ConsulRequestOptions, value?: any) => {
+  <T extends (options: ConsulRequestOptions, value?: unknown) => unknown>(
+    handler: T,
+  ) =>
+  async (options: ConsulRequestOptions, value?: unknown) => {
     try {
       return handler(options, value)
     } catch (e) {
