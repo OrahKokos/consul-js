@@ -40,3 +40,5 @@ Thumbs.db
 
 volumes/consul/data/*
 !volumes/consul/data/.gitkeep
+
+.secrets
