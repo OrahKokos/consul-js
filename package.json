@@ -10,6 +10,10 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.3.0",
+    "@commitlint/config-conventional": "^17.3.0",
+    "@commitlint/config-nx-scopes": "^17.2.0",
+    "@commitlint/cz-commitlint": "^17.3.0",
     "@nrwl/eslint-plugin-nx": "15.3.0",
     "@nrwl/jest": "15.3.0",
     "@nrwl/js": "15.3.0",
@@ -19,6 +23,8 @@
     "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
+    "commitizen": "^4.2.6",
+    "commitlint": "^17.3.0",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
